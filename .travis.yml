@@ -4,11 +4,6 @@ sudo: false
 cache:
   directories:
     - ${TRAVIS_BUILD_DIR}/deps/cmake
-    - ${TRAVIS_BUILD_DIR}/deps/llvm-3.5.2/install
-    - ${TRAVIS_BUILD_DIR}/deps/llvm-3.6.2/install
-    - ${TRAVIS_BUILD_DIR}/deps/llvm-3.7.1/install
-    - ${TRAVIS_BUILD_DIR}/deps/llvm-3.8.1/install
-    - ${TRAVIS_BUILD_DIR}/deps/llvm-3.9.1/install
 
 matrix:
   include:
@@ -27,7 +22,7 @@ matrix:
         apt:
           packages:
             - clang-3.6
-            - g++-5
+            - gcc-5-multilib
           sources: &sources
             - ubuntu-toolchain-r-test
             - llvm-toolchain-precise-3.6
@@ -40,7 +35,7 @@ matrix:
         apt:
           packages:
             - clang-3.7
-            - g++-5
+            - gcc-5-multilib
           sources: &sources
             - ubuntu-toolchain-r-test
             - llvm-toolchain-precise-3.7
@@ -53,7 +48,7 @@ matrix:
         apt:
           packages:
             - clang-3.8
-            - g++-5
+            - gcc-5-multilib
           sources: &sources
             - ubuntu-toolchain-r-test
             - llvm-toolchain-precise-3.8
@@ -66,7 +61,7 @@ matrix:
         apt:
           packages:
             - clang-3.9
-            - g++-5
+            - gcc-5-multilib
           sources: &sources
             - ubuntu-toolchain-r-test
             - llvm-toolchain-precise-3.9
@@ -77,7 +72,7 @@ matrix:
       os: linux
       addons: &gcc5
         apt:
-          packages: g++-5
+          packages: gcc-5-multilib
           sources: *sources
     - env: GCC_VERSION=5 BUILD_TYPE=Release
       os: linux
@@ -86,7 +81,7 @@ matrix:
       os: linux
       addons: &gcc6
         apt:
-          packages: g++-6
+          packages: gcc-6-multilib
           sources: *sources
     - env: GCC_VERSION=6 BUILD_TYPE=Release
       os: linux
@@ -95,7 +90,7 @@ matrix:
 install:
   - if [[ -n "$CLANG_VERSION" ]]; then export CXX=clang++-$CLANG_VERSION CC=clang-$CLANG_VERSION; fi
   - if [[ -n "$GCC_VERSION" ]]; then export CXX=g++-$GCC_VERSION CC=gcc-$GCC_VERSION; fi
-  - JOBS=2
+  - JOBS=1
   - DEPS_DIR="${TRAVIS_BUILD_DIR}/deps"
   - mkdir -p "${DEPS_DIR}" && cd "${DEPS_DIR}"
 
