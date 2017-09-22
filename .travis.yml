@@ -7,11 +7,11 @@ cache:
 
 matrix:
   include:
-    - env: BUILD_TYPE=Debug CMAKE_FLAGS=-DARCH_USER=ON
+    - env: BUILD_TYPE=Debug ARCH_USER=ON
       os: osx
       osx_image: xcode8
       compiler: clang
-    - env: BUILD_TYPE=Release CMAKE_FLAGS=-DARCH_USER=ON
+    - env: BUILD_TYPE=Release ARCH_USER=ON
       os: osx
       osx_image: xcode8
       compiler: clang
@@ -85,6 +85,18 @@ matrix:
     - env: GCC_VERSION=6 BUILD_TYPE=Release
       os: linux
       addons: *gcc6
+    - env: GCC_VERSION=5 BUILD_TYPE=Debug ARCH_USER=ON
+      os: linux
+      addons: *gcc5
+    - env: GCC_VERSION=6 BUILD_TYPE=Debug ARCH_USER=ON
+      os: linux
+      addons: *gcc6
+    - env: GCC_VERSION=5 BUILD_TYPE=Release ARCH_USER=ON
+      os: linux
+      addons: *gcc5
+    - env: GCC_VERSION=6 BUILD_TYPE=Release ARCH_USER=ON
+      os: linux
+      addons: *gcc6
 
 install:
   - if [[ -n "$CLANG_VERSION" ]]; then export CXX=clang++-$CLANG_VERSION CC=clang-$CLANG_VERSION; fi
@@ -109,5 +121,6 @@ install:
 
 script:
   - cd "${TRAVIS_BUILD_DIR}"
-  - cmake . -Bout -DCMAKE_CXX_COMPILER="$CXX" -DCMAKE_C_COMPILER="$CC" $CMAKE_FLAGS -DCMAKE_BUILD_TYPE=$BUILD_TYPE
+  - "[ -z $ARCH_USER ] && ARCH_USER=OFF"
+  - cmake . -Bout -DCMAKE_CXX_COMPILER="$CXX" -DCMAKE_C_COMPILER="$CC" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DARCH_USER=$ARCH_USER
   - cmake --build out -- -j$JOBS
