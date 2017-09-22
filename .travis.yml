@@ -1,0 +1,16 @@
+language: c
+
+matrix:
+  include:
+  - os: linux
+    compiler: gcc
+  - os: linux
+    compiler: clang
+
+env:
+- "MAKE_COMMAND=make"
+
+script:
+- "rm -rf out && mkdir -p out && cd out"
+- "cmake ${CMAKE_FLAGS} .."
+- "${MAKE_COMMAND}"
