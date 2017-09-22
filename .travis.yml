@@ -121,6 +121,6 @@ install:
 
 script:
   - cd "${TRAVIS_BUILD_DIR}"
-  - "[ -z $ARCH_USER ] && ARCH_USER=OFF"
+  - "if [ -z $ARCH_USER ]; then ARCH_USER=OFF; fi"
   - cmake . -Bout -DCMAKE_CXX_COMPILER="$CXX" -DCMAKE_C_COMPILER="$CC" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DARCH_USER=$ARCH_USER
   - cmake --build out -- -j$JOBS
